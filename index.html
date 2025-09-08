@@ -35,7 +35,7 @@
                 <p class="text-lg"><strong>Tiene aproximadamente 12 minutos para cada respuesta, administre bien su tiempo.</strong></p>
                 <p class="text-lg">Lea con atención cada pregunta antes de responder.</p>
                 <p class="text-lg text-red-600 font-bold">Esta aplicación cuenta con un sistema de identificación de páginas abiertas. Si se abre otra pestaña o ventana durante el examen, se enviará automáticamente un mensaje al profesor y su examen será anulado.</p>
-                <p class="text-lg">No intente hacer trampa, el sistema está monitoreando su actividad.</p>
+                <p class="text-lg">Resuelva este examen con completa honestidad, el sistema está monitoreando su actividad.</p>
             </div>
             <button id="accept-warning" class="px-8 py-3 bg-green-600 text-white font-semibold rounded-xl shadow-md hover:bg-green-700 transition-colors duration-200">
                 Acepto y comprendo las condiciones
@@ -56,8 +56,8 @@
                 id: 1,
                 question: '¿Quiénes son considerados los padres del cálculo integral en su forma moderna, desarrollando simultáneamente la teoría de las derivadas e integrales?',
                 options: [
+                    'Isaac Newton y Gottfried Wilhelm Leibniz', // RESPUESTA CORRECTA (A)
                     'Arquímedes y René Descartes',
-                    'Isaac Newton y Gottfried Wilhelm Leibniz', // RESPUESTA CORRECTA
                     'Euclides y Carl Friedrich Gauss',
                     'Leonhard Euler y Bernhard Riemann'
                 ],
@@ -68,8 +68,8 @@
                 id: 2,
                 question: 'La integral indefinida de $\\int f(x) dx$ da como resultado:',
                 options: [
-                    '$F(x)+C$, tal que $F\'(x)=f(x)$', // RESPUESTA CORRECTA
                     '$F\'(x)+C$, tal que $F(x)=f(x)$',
+                    '$F(x)+C$, tal que $F\'(x)=f(x)$', // RESPUESTA CORRECTA (B)
                     '$f(x)+C$, tal que $f\'(x)=F(x)$',
                     '$F(x)$, tal que $F\'(x)=f(x)$'
                 ],
@@ -80,10 +80,10 @@
                 id: 3,
                 question: '¿Cuántas primitivas o antiderivadas puede tener una función $f(x)$?',
                 options: [
-                    'Infinitas, porque hay muchas funciones distintas que tienen la misma derivada.',
+                    'Infinitas, porque hay muchas funciones distintos que tienen la misma derivada.',
                     'Una, dado que solo existe una función $F(x)$ tal que $F\'(x)=f(x)$.',
-                    'Infinitas, dado que si $F(x)$ es primitiva, $F(x)+C$ también lo es.', // RESPUESTA CORRECTA
-                    'Una, porque la derivada y la integral son únicas por teorema.'
+                    'Una, porque la derivada y la integral son únicas por teorema.',
+                    'Infinitas, dado que si $F(x)$ es primitiva, $F(x)+C$ también lo es.' // RESPUESTA CORRECTA (D)
                 ],
                 correctAnswer: 'Infinitas, dado que si $F(x)$ es primitiva, $F(x)+C$ también lo es.',
                 points: 0.83
@@ -92,9 +92,9 @@
                 id: 4,
                 question: '¿Cuál de las siguientes funciones tiene como diferencial $dy = e^x(\\sin x - \\cos x) dx$?',
                 options: [
+                    '$y = -e^x\\cos x + C$', // RESPUESTA CORRECTA (A)
                     '$y = e^x(\\sin x - \\cos x) + C$',
                     '$y = e^x\\sin x + C$',
-                    '$y = -e^x\\cos x + C$', // RESPUESTA CORRECTA
                     '$y = e^x\\cos x + C$'
                 ],
                 correctAnswer: '$y = -e^x\\cos x + C$',
@@ -102,11 +102,11 @@
             },
             {
                 id: 5,
-                question: '¿Cuál de las siguientes funciones es una primitiva de $g(x) = kx^n$, donde $k$ y $n$ son constantes?',
+                question: '¿Cuál de las siguientes funciones es una primitiva de $g(x) = kx^n$, donde $k$ и $n$ son constantes?',
                 options: [
                     '$G(x) = \\dfrac{k}{n}x^{n-1}+C$',
-                    '$G(x) = k\\dfrac{x^{n+1}}{n+1}$', // RESPUESTA CORRECTA
                     '$G(x) = k(n+1)x^{n+1} +C$',
+                    '$G(x) = k\\dfrac{x^{n+1}}{n+1}$', // RESPUESTA CORRECTA (C)
                     '$G(x) = \\dfrac{x^{n+1}}{k(n+1)}$'
                 ],
                 correctAnswer: '$G(x) = k\\dfrac{x^{n+1}}{n+1}$',
@@ -117,7 +117,7 @@
                 question: '¿Por qué se dice que al integrar una función $f(x)$ se obtiene una familia de funciones en lugar de una única función?',
                 options: [
                     'Porque al derivar se pierde información sobre las constantes aditivas de una función, por eso no se toman en cuenta las constantes al integrar.',
-                    'Porque la integral indefinida representa un conjunto de funciones cuya derivada es $f(x)$, y cualquier constante sumada mantiene esa derivada.', // RESPUESTA CORRECTA
+                    'Porque la integral indefinida representa un conjunto de funciones cuya derivada es $f(x)$, y cualquier constante sumada mantiene esa derivada.', // RESPUESTA CORRECTA (B)
                     'Porque la elección de la primitiva depende de las condiciones iniciales, y sin ellas no hay unicidad.',
                     'Porque la integral solo toma en cuenta todas las posibles funciones continuas que producen la misma derivada $f(x)+C$.'
                 ],
@@ -130,8 +130,8 @@
                 options: [
                     'Porque la derivada de una constante es cero y toda función a integrar esta sumada a cero; la integral indefinida, como operación inversa, debe recuperar la constante de manera exacta.',
                     'Porque todas las primitivas posibles son funciones que tienen el mismo comportamiento pero que se diferencian por tener desplazamientos en el eje Y de acuerdo con la constante que se sume o se reste.',
-                    'Porque al derivar se pierde información sobre las constantes aditivas específicas de la función; la integral indefinida, como operación inversa, debe recuperarlas, aunque no de manera exacta.', // RESPUESTA CORRECTA
-                    'Porque la integral busca capturar todas las soluciones posibles, aunque no difieran solo en una constante.'
+                    'Porque la integral busca capturar todas las soluciones posibles, aunque no difieran solo en una constante.',
+                    'Porque al derivar se pierde información sobre las constantes aditivas específicas de la función; la integral indefinida, como operación inversa, debe recuperarlas, aunque no de manera exacta.' // RESPUESTA CORRECTA (D)
                 ],
                 correctAnswer: 'Porque al derivar se pierde información sobre las constantes aditivas específicas de la función; la integral indefinida, como operación inversa, debe recuperarlas, aunque no de manera exacta.',
                 points: 0.83
@@ -140,8 +140,8 @@
                 id: 8,
                 question: 'Usando diferenciales para aproximar $\\ln(1.2)$, se obtiene:',
                 options: [
-                    '$y + \\Delta y \\approx \\ln{x} + \\frac{1}{x}\\Delta x$, con $x = 1$, $\\Delta x = 0.2$; $\\ln(1.2) \\approx 0.2$', // RESPUESTA CORRECTA
                     '$y + \\Delta y \\approx \\ln{x} + x \\Delta x$, con $x = 1$, $\\Delta x = 0.2$; $\\ln(1.2) \\approx 1.2$',
+                    '$y + \\Delta y \\approx \\ln{x} + \\frac{1}{x}\\Delta x$, con $x = 1$, $\\Delta x = 0.2$; $\\ln(1.2) \\approx 0.2$', // RESPUESTA CORRECTA (B)
                     '$y + \\Delta y \\approx \\ln(x + \\Delta x)$; $\\ln(1.2) \\approx 0.182$',
                     '$y + \\Delta y \\approx \\ln{x} + \\frac{1}{x^2}\\Delta x$, con $x = 1$, $\\Delta x = 0.2$; $\\ln(1.2) \\approx 0.4$'
                 ],
@@ -152,8 +152,8 @@
                 id: 9,
                 question: '¿Qué se necesita para encontrar la solución particular de la ecuación diferencial $\\frac{dy}{dx} = f(x)$?',
                 options: [
+                    'Un punto $(x_0, y_0)$ de la primitiva $y = F(x)$.', // RESPUESTA CORRECTA (A)
                     'Una condición inicial $(x_0, y_0)$ de la función $f(x)$ a integrar.',
-                    'Un punto $(x_0, y_0)$ de la primitiva $y = F(x)$.', // RESPUESTA CORRECTA
                     'Una condición final $(x_f, y_f)$.',
                     'La constante de integración $C$ elegida arbitrariamente.'
                 ],
@@ -165,8 +165,8 @@
                 question: 'Dada la ecuación diferencial $\\frac{dy}{dx} = e^x + \\sqrt{x}$ con condición inicial $y(0) = 5$, ¿cuál es la solución particular $y(x)$?',
                 options: [
                     '$y(x) = e^x + \\frac{2}{3}x^{3/2} + 5$',
-                    '$y(x) = e^x + \\frac{2}{3}x^{3/2} + 4$', // RESPUESTA CORRECTA
                     '$y(x) = e^x + \\frac{1}{2}x^{3/2} + 4$',
+                    '$y(x) = e^x + \\frac{2}{3}x^{3/2} + 4$', // RESPUESTA CORRECTA (C)
                     '$y(x) = e^x + \\sqrt{x} + 5$'
                 ],
                 correctAnswer: '$y(x) = e^x + \\frac{2}{3}x^{3/2} + 4$',
@@ -176,8 +176,8 @@
                 id: 11,
                 question: 'Calcule la integral: $\\displaystyle \\int \\left(\\frac{2}{x} + 2 e^x \\right) dx$',
                 options: [
-                    '$2(\\ln|x| +  e^x) + C$', // RESPUESTA CORRECTA
                     '$\\frac{1}{2}\\ln|x| +2 e^x + C$',
+                    '$2(\\ln|x| +  e^x) + C$', // RESPUESTA CORRECTA (B)
                     '$\\frac{1}{x} + \\frac{1}{2}e^x + C$',
                     '$\\ln(x) + 2 e^x + C$'
                 ],
@@ -188,10 +188,10 @@
                 id: 12,
                 question: 'Calcule la integral: $\\displaystyle \\int \\left( 2x^3 - \\frac{1}{x^2} + 4 \\right) dx$',
                 options: [
-                    '$\\frac{1}{2}x^4 + \\frac{1}{x} + 4x + C$', // RESPUESTA CORRECTA
                     '$2x^4 - \\frac{1}{x} + 4x + C$',
                     '$\\frac{1}{2}x^4 - \\frac{1}{x^2} + 4x + C$',
-                    '$2x^4 + \\frac{1}{x^2} + 4x + C$'
+                    '$2x^4 + \\frac{1}{x^2} + 4x + C$',
+                    '$\\frac{1}{2}x^4 + \\frac{1}{x} + 4x + C$' // RESPUESTA CORRECTA (D)
                 ],
                 correctAnswer: '$\\frac{1}{2}x^4 + \\frac{1}{x} + 4x + C$',
                 points: 0.83
@@ -351,7 +351,8 @@
         };
         
         const renderFinalScore = () => {
-            const finalScore = score.toFixed(2);
+            // Ajustar la calificación para que sea múltiplo de 0.5
+            const adjustedScore = adjustScore(score);
             let studentsList = students.map(s => `<li>${s.name} (${s.nua})</li>`).join('');
             
             return `
@@ -362,7 +363,7 @@
                         ${studentsList}
                     </ul>
                     <div class="bg-blue-100 p-6 rounded-xl shadow-inner inline-block">
-                        <h2 class="text-2xl font-bold text-blue-800">Calificación Final: ${finalScore} / 10</h2>
+                        <h2 class="text-2xl font-bold text-blue-800">Calificación Final: ${adjustedScore} / 10</h2>
                     </div>
                     <p class="text-gray-600">Puedes generar un reporte en PDF con los resultados.</p>
                     <button
@@ -374,6 +375,15 @@
                 </div>
             `;
         };
+
+        // Ajustar la calificación para que sea múltiplo de 0.5
+        function adjustScore(rawScore) {
+            // Redondear al múltiplo de 0.5 más cercano
+            const roundedScore = Math.round(rawScore * 2) / 2;
+            
+            // Asegurarse de que no sea mayor a 10
+            return Math.min(roundedScore, 10);
+        }
 
         // --- Lógica del examen ---
         const addEventListeners = () => {
@@ -515,10 +525,11 @@
             doc.text(`Hora de Inicio: ${startTimeString}`, 20, 67);
             doc.text(`Hora de Entrega: ${timeString}`, 20, 74);
             
-            // Calificación
+            // Calificación (ajustada)
+            const adjustedScore = adjustScore(score);
             doc.setFontSize(16);
             doc.setTextColor(0, 0, 255); // Azul para la calificación
-            doc.text(`Calificación Final: ${score.toFixed(2)} / 10`, 105, 85, { align: 'center' });
+            doc.text(`Calificación Final: ${adjustedScore} / 10`, 105, 85, { align: 'center' });
             
             // Detalles de preguntas
             doc.setFontSize(10);
