@@ -3,26 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Examen de Cálculo</title>
+    <title>I Examen de Cálculo Integral</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f3f4f6;
-        }
-        .latex-formula {
-            font-size: 1.25rem;
-            line-height: 1.75rem;
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 1rem;
-        }
-        .question-content {
-            margin-bottom: 2rem;
         }
     </style>
 </head>
@@ -35,33 +23,32 @@
         const { jsPDF } = window.jspdf;
 
         // --- Estructura del examen ---
-        // TODO: Reemplazar con las preguntas reales del examen del usuario
         const questionsData = [
             {
                 id: 1,
-                question: 'Encuentre la derivada de la siguiente función: $f(x) = x^2 + 2x - 1$',
-                options: ['2x + 2', 'x^2 + 2', '2x - 1', 'x + 2'],
+                question: 'Encuentre la derivada de la siguiente función: f(x) = x² + 2x - 1',
+                options: ['2x + 2', 'x² + 2', '2x - 1', 'x + 2'],
                 correctAnswer: '2x + 2',
                 points: 2.5
             },
             {
                 id: 2,
-                question: 'Resuelva la siguiente integral: $\\int (3x^2 + 4x) dx$',
-                options: ['x^3 + 2x^2 + C', 'x^3 + 4x^2 + C', '6x + 4 + C', '3x^3 + 4x^2 + C'],
-                correctAnswer: 'x^3 + 2x^2 + C',
+                question: 'Resuelva la siguiente integral: ∫ (3x² + 4x) dx',
+                options: ['x³ + 2x² + C', 'x³ + 4x² + C', '6x + 4 + C', '3x³ + 4x² + C'],
+                correctAnswer: 'x³ + 2x² + C',
                 points: 2.5
             },
             {
                 id: 3,
-                question: 'Calcule el límite: $\\lim_{x \\to 2} \\frac{x^2 - 4}{x - 2}$',
+                question: 'Calcule el límite: lim x→2 (x² - 4) / (x - 2)',
                 options: ['0', '1', '2', '4'],
                 correctAnswer: '4',
                 points: 2.5
             },
             {
                 id: 4,
-                question: '¿Cuál es el valor de $\\sin(\\frac{\\pi}{2})$?',
-                options: ['0', '1', '-1', '\\frac{\\sqrt{2}}{2}'],
+                question: '¿Cuál es el valor de sin(π/2)?',
+                options: ['0', '1', '-1', '√2/2'],
                 correctAnswer: '1',
                 points: 2.5
             }
@@ -88,10 +75,6 @@
                 appContainer.innerHTML = renderExam();
             }
             addEventListeners();
-            // This is the key fix: call typesetPromise after content is in the DOM
-            if (window.MathJax) {
-                MathJax.typesetPromise();
-            }
         };
 
         const renderStudentForm = () => {
@@ -107,7 +90,7 @@
 
             return `
                 <div class="space-y-6">
-                    <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800">Examen de Cálculo</h1>
+                    <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800">I Examen de Cálculo Integral</h1>
                     <p class="text-md md:text-lg text-gray-600">Por favor, ingresa los datos de los integrantes del equipo.</p>
                     <div class="space-y-4">
                         ${studentInputs}
