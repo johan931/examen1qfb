@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
-    <!-- Añadimos KaTeX para renderizar ecuaciones -->
+    <!-- KaTeX para renderizar ecuaciones -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
@@ -19,9 +19,30 @@
             background-color: #f3f4f6;
         }
         .katex { font-size: 1.1em; }
+        .option-btn { transition: all 0.2s ease; }
+        .option-btn:hover { transform: translateY(-2px); }
+        #warning-modal {
+            transition: opacity 0.3s ease;
+        }
     </style>
 </head>
 <body class="p-6 md:p-12 min-h-screen flex items-center justify-center">
+    <!-- Modal de advertencia -->
+    <div id="warning-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-2xl mx-4">
+            <h2 class="text-2xl font-bold text-red-600 mb-4">⚠️ ADVERTENCIA IMPORTANTE</h2>
+            <div class="text-left space-y-4 mb-6">
+                <p class="text-lg"><strong>Tiene aproximadamente 12 minutos para cada respuesta, administre bien su tiempo.</strong></p>
+                <p class="text-lg">Lea con atención cada pregunta antes de responder.</p>
+                <p class="text-lg text-red-600 font-bold">Esta aplicación cuenta con un sistema de identificación de páginas abiertas. Si se abre otra pestaña o ventana durante el examen, se enviará automáticamente un mensaje al profesor y su examen será anulado.</p>
+                <p class="text-lg">Trabaje con completa honestidad, el sistema está monitoreando su actividad.</p>
+            </div>
+            <button id="accept-warning" class="px-8 py-3 bg-green-600 text-white font-semibold rounded-xl shadow-md hover:bg-green-700 transition-colors duration-200">
+                Acepto y comprendo las condiciones
+            </button>
+        </div>
+    </div>
+
     <div id="app" class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-4xl text-center">
         <!-- Contenido de la app se renderizará aquí -->
     </div>
@@ -33,31 +54,147 @@
         const questionsData = [
             {
                 id: 1,
-                question: 'Encuentre la derivada de la siguiente función: $f(x) = x^2 + 2x - 1$',
-                options: ['$2x + 2$', '$x^2 + 2$', '$2x - 1$', '$x + 2$'],
-                correctAnswer: '$2x + 2$',
-                points: 2.5
+                question: '¿Quiénes son considerados los padres del cálculo integral en su forma moderna, desarrollando simultáneamente la teoría de las derivadas e integrales?',
+                options: [
+                    'Arquímedes y René Descartes',
+                    'Isaac Newton y Gottfried Wilhelm Leibniz', // RESPUESTA CORRECTA
+                    'Euclides y Carl Friedrich Gauss',
+                    'Leonhard Euler y Bernhard Riemann'
+                ],
+                correctAnswer: 'Isaac Newton y Gottfried Wilhelm Leibniz',
+                points: 0.83
             },
             {
                 id: 2,
-                question: 'Resuelva la siguiente integral: $\\int (3x^2 + 4x)  dx$',
-                options: ['$x^3 + 2x^2 + C$', '$x^3 + 4x^2 + C$', '$6x + 4 + C$', '$3x^3 + 4x^2 + C$'],
-                correctAnswer: '$x^3 + 2x^2 + C$',
-                points: 2.5
+                question: 'La integral indefinida de $\\int f(x) dx$ da como resultado:',
+                options: [
+                    '$F(x)+C$, tal que $F\'(x)=f(x)$', // RESPUESTA CORRECTA
+                    '$F\'(x)+C$, tal que $F(x)=f(x)$',
+                    '$f(x)+C$, tal que $f\'(x)=F(x)$',
+                    '$F(x)$, tal que $F\'(x)=f(x)$'
+                ],
+                correctAnswer: '$F(x)+C$, tal que $F\'(x)=f(x)$',
+                points: 0.83
             },
             {
                 id: 3,
-                question: 'Calcule el límite: $\\lim_{x \\to 2} \\frac{x^2 - 4}{x - 2}$',
-                options: ['$0$', '$1$', '$2$', '$4$'],
-                correctAnswer: '$4$',
-                points: 2.5
+                question: '¿Cuántas primitivas o antiderivadas puede tener una función $f(x)$?',
+                options: [
+                    'Infinitas, porque hay muchas funciones distintas que tienen la misma derivada.',
+                    'Una, dado que solo existe una función $F(x)$ tal que $F\'(x)=f(x)$.',
+                    'Infinitas, dado que si $F(x)$ es primitiva, $F(x)+C$ también lo es.', // RESPUESTA CORRECTA
+                    'Una, porque la derivada y la integral son únicas por teorema.'
+                ],
+                correctAnswer: 'Infinitas, dado que si $F(x)$ es primitiva, $F(x)+C$ también lo es.',
+                points: 0.83
             },
             {
                 id: 4,
-                question: '¿Cuál es el valor de $\\sin(\\frac{\\pi}{2})$?',
-                options: ['$0$', '$1$', '$-1$', '$\\frac{\\sqrt{2}}{2}$'],
-                correctAnswer: '$1$',
-                points: 2.5
+                question: '¿Cuál de las siguientes funciones tiene como diferencial $dy = e^x(\\sin x - \\cos x) dx$?',
+                options: [
+                    '$y = e^x(\\sin x - \\cos x) + C$',
+                    '$y = e^x\\sin x + C$',
+                    '$y = -e^x\\cos x + C$', // RESPUESTA CORRECTA
+                    '$y = e^x\\cos x + C$'
+                ],
+                correctAnswer: '$y = -e^x\\cos x + C$',
+                points: 0.83
+            },
+            {
+                id: 5,
+                question: '¿Cuál de las siguientes funciones es una primitiva de $g(x) = kx^n$, donde $k$ y $n$ son constantes?',
+                options: [
+                    '$G(x) = \\dfrac{k}{n}x^{n-1}+C$',
+                    '$G(x) = k\\dfrac{x^{n+1}}{n+1}$', // RESPUESTA CORRECTA
+                    '$G(x) = k(n+1)x^{n+1} +C$',
+                    '$G(x) = \\dfrac{x^{n+1}}{k(n+1)}$'
+                ],
+                correctAnswer: '$G(x) = k\\dfrac{x^{n+1}}{n+1}$',
+                points: 0.83
+            },
+            {
+                id: 6,
+                question: '¿Por qué se dice que al integrar una función $f(x)$ se obtiene una familia de funciones en lugar de una única función?',
+                options: [
+                    'Porque al derivar se pierde información sobre las constantes aditivas de una función, por eso no se toman en cuenta las constantes al integrar.',
+                    'Porque la integral indefinida representa un conjunto de funciones cuya derivada es $f(x)$, y cualquier constante sumada mantiene esa derivada.', // RESPUESTA CORRECTA
+                    'Porque la elección de la primitiva depende de las condiciones iniciales, y sin ellas no hay unicidad.',
+                    'Porque la integral solo toma en cuenta todas las posibles funciones continuas que producen la misma derivada $f(x)+C$.'
+                ],
+                correctAnswer: 'Porque la integral indefinida representa un conjunto de funciones cuya derivada es $f(x)$, y cualquier constante sumada mantiene esa derivada.',
+                points: 0.83
+            },
+            {
+                id: 7,
+                question: '¿Por qué debe añadirse una constante de integración $C$ indeterminada al integrar una función $f(x)$?',
+                options: [
+                    'Porque la derivada de una constante es cero y toda función a integrar esta sumada a cero; la integral indefinida, como operación inversa, debe recuperar la constante de manera exacta.',
+                    'Porque todas las primitivas posibles son funciones que tienen el mismo comportamiento pero que se diferencian por tener desplazamientos en el eje Y de acuerdo con la constante que se sume o se reste.',
+                    'Porque al derivar se pierde información sobre las constantes aditivas específicas de la función; la integral indefinida, como operación inversa, debe recuperarlas, aunque no de manera exacta.', // RESPUESTA CORRECTA
+                    'Porque la integral busca capturar todas las soluciones posibles, aunque no difieran solo en una constante.'
+                ],
+                correctAnswer: 'Porque al derivar se pierde información sobre las constantes aditivas específicas de la función; la integral indefinida, como operación inversa, debe recuperarlas, aunque no de manera exacta.',
+                points: 0.83
+            },
+            {
+                id: 8,
+                question: 'Usando diferenciales para aproximar $\\ln(1.2)$, se obtiene:',
+                options: [
+                    '$y + \\Delta y \\approx \\ln{x} + \\frac{1}{x}\\Delta x$, con $x = 1$, $\\Delta x = 0.2$; $\\ln(1.2) \\approx 0.2$', // RESPUESTA CORRECTA
+                    '$y + \\Delta y \\approx \\ln{x} + x \\Delta x$, con $x = 1$, $\\Delta x = 0.2$; $\\ln(1.2) \\approx 1.2$',
+                    '$y + \\Delta y \\approx \\ln(x + \\Delta x)$; $\\ln(1.2) \\approx 0.182$',
+                    '$y + \\Delta y \\approx \\ln{x} + \\frac{1}{x^2}\\Delta x$, con $x = 1$, $\\Delta x = 0.2$; $\\ln(1.2) \\approx 0.4$'
+                ],
+                correctAnswer: '$y + \\Delta y \\approx \\ln{x} + \\frac{1}{x}\\Delta x$, con $x = 1$, $\\Delta x = 0.2$; $\\ln(1.2) \\approx 0.2$',
+                points: 0.83
+            },
+            {
+                id: 9,
+                question: '¿Qué se necesita para encontrar la solución particular de la ecuación diferencial $\\frac{dy}{dx} = f(x)$?',
+                options: [
+                    'Una condición inicial $(x_0, y_0)$ de la función $f(x)$ a integrar.',
+                    'Un punto $(x_0, y_0)$ de la primitiva $y = F(x)$.', // RESPUESTA CORRECTA
+                    'Una condición final $(x_f, y_f)$.',
+                    'La constante de integración $C$ elegida arbitrariamente.'
+                ],
+                correctAnswer: 'Un punto $(x_0, y_0)$ de la primitiva $y = F(x)$.',
+                points: 0.83
+            },
+            {
+                id: 10,
+                question: 'Dada la ecuación diferencial $\\frac{dy}{dx} = e^x + \\sqrt{x}$ con condición inicial $y(0) = 5$, ¿cuál es la solución particular $y(x)$?',
+                options: [
+                    '$y(x) = e^x + \\frac{2}{3}x^{3/2} + 5$',
+                    '$y(x) = e^x + \\frac{2}{3}x^{3/2} + 4$', // RESPUESTA CORRECTA
+                    '$y(x) = e^x + \\frac{1}{2}x^{3/2} + 4$',
+                    '$y(x) = e^x + \\sqrt{x} + 5$'
+                ],
+                correctAnswer: '$y(x) = e^x + \\frac{2}{3}x^{3/2} + 4$',
+                points: 0.83
+            },
+            {
+                id: 11,
+                question: 'Calcule la integral: $\\displaystyle \\int \\left(\\frac{2}{x} + 2 e^x \\right) dx$',
+                options: [
+                    '$2(\\ln|x| +  e^x) + C$', // RESPUESTA CORRECTA
+                    '$\\frac{1}{2}\\ln|x| +2 e^x + C$',
+                    '$\\frac{1}{x} + \\frac{1}{2}e^x + C$',
+                    '$\\ln(x) + 2 e^x + C$'
+                ],
+                correctAnswer: '$2(\\ln|x| +  e^x) + C$',
+                points: 0.83
+            },
+            {
+                id: 12,
+                question: 'Calcule la integral: $\\displaystyle \\int \\left( 2x^3 - \\frac{1}{x^2} + 4 \\right) dx$',
+                options: [
+                    '$\\frac{1}{2}x^4 + \\frac{1}{x} + 4x + C$', // RESPUESTA CORRECTA
+                    '$2x^4 - \\frac{1}{x} + 4x + C$',
+                    '$\\frac{1}{2}x^4 - \\frac{1}{x^2} + 4x + C$',
+                    '$2x^4 + \\frac{1}{x^2} + 4x + C$'
+                ],
+                correctAnswer: '$\\frac{1}{2}x^4 + \\frac{1}{x} + 4x + C$',
+                points: 0.83
             }
         ];
 
@@ -68,12 +205,46 @@
         let score = 0;
         let isExamFinished = false;
         let timer;
-        let timeLeft = 7200; // 2 horas en segundos
+        let timeLeft = 3600; // 1 hora en segundos
         let examStartTime = null;
+        let warningAccepted = false;
+        let pageFocus = true;
+
+        // --- Detección de cambio de pestaña ---
+        document.addEventListener('visibilitychange', function() {
+            if (warningAccepted && !document.hidden) {
+                // El usuario ha vuelto a la pestaña
+                pageFocus = true;
+            } else if (warningAccepted && document.hidden) {
+                // El usuario ha cambiado de pestaña
+                pageFocus = false;
+                alertToProfessor();
+            }
+        });
+        
+        window.addEventListener('blur', function() {
+            if (warningAccepted) {
+                pageFocus = false;
+                alertToProfessor();
+            }
+        });
+        
+        function alertToProfessor() {
+            // En una implementación real, aquí se enviaría una notificación al servidor
+            console.log("ALERTA: El estudiante ha cambiado de pestaña. Notificación enviada al profesor.");
+            // Simulamos un envío de alerta
+            alert("⚠️ Se ha detectado que ha abandonado la página del examen. Se ha notificado al profesor. Si continúa, su examen será anulado.");
+        }
 
         // --- Funciones de renderizado ---
         const renderApp = () => {
             const appContainer = document.getElementById('app');
+            if (!warningAccepted) {
+                // Mostrar modal de advertencia
+                document.getElementById('warning-modal').classList.remove('hidden');
+                return;
+            }
+            
             if (students.length === 0) {
                 appContainer.innerHTML = renderStudentForm();
             } else if (isExamFinished) {
@@ -140,9 +311,9 @@
             const optionsHtml = questionData.options.map((option, index) => `
                 <button
                     data-answer="${option}"
-                    class="p-4 border-2 border-gray-300 rounded-xl shadow-sm text-gray-800 text-left transition-colors duration-200 hover:bg-gray-100
-                    ${answers[questionData.id] === option ? 'bg-blue-200 border-blue-500' : 'bg-white'}
-                ">
+                    class="option-btn p-4 border-2 border-gray-300 rounded-xl shadow-sm text-gray-800 text-left transition-colors duration-200 hover:bg-gray-100
+                    ${answers[questionData.id] === option ? 'bg-blue-200 border-blue-500' : 'bg-white'}"
+                >
                     <span class="font-bold">Opción ${index + 1}:</span> ${option}
                 </button>
             `).join('');
@@ -150,7 +321,7 @@
             return `
                 <div class="space-y-8">
                     <div class="flex justify-between items-center text-xl font-bold text-gray-700 mb-6">
-                        <span id="timer" class="text-xl">Tiempo restante: 02:00:00</span>
+                        <span id="timer" class="text-xl">Tiempo restante: 01:00:00</span>
                         <span>Pregunta ${questionNumber} de ${totalQuestions}</span>
                     </div>
                     <div class="question-content bg-gray-50 p-6 rounded-lg shadow-inner">
@@ -206,23 +377,37 @@
 
         // --- Lógica del examen ---
         const addEventListeners = () => {
-            if (students.length === 0) {
+            // Evento para aceptar la advertencia
+            document.getElementById('accept-warning').addEventListener('click', function() {
+                warningAccepted = true;
+                document.getElementById('warning-modal').style.display = 'none';
+                renderApp();
+            });
+            
+            if (students.length === 0 && warningAccepted) {
                 document.getElementById('start-exam-btn').addEventListener('click', startExam);
                 for (let i = 0; i < 4; i++) {
-                    document.getElementById(`student-nua-${i}`).addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter') {
-                            startExam();
-                        }
-                    });
+                    const nuaInput = document.getElementById(`student-nua-${i}`);
+                    if (nuaInput) {
+                        nuaInput.addEventListener('keypress', (e) => {
+                            if (e.key === 'Enter') {
+                                startExam();
+                            }
+                        });
+                    }
                 }
             } else if (isExamFinished) {
                 document.getElementById('generate-pdf-btn').addEventListener('click', generatePDF);
             } else {
-                document.getElementById('prev-btn').addEventListener('click', () => {
+                const prevBtn = document.getElementById('prev-btn');
+                const nextBtn = document.getElementById('next-btn');
+                
+                if (prevBtn) prevBtn.addEventListener('click', () => {
                     currentQuestionIndex--;
                     renderApp();
                 });
-                document.getElementById('next-btn').addEventListener('click', () => {
+                
+                if (nextBtn) nextBtn.addEventListener('click', () => {
                     if (currentQuestionIndex < questionsData.length - 1) {
                         currentQuestionIndex++;
                         renderApp();
@@ -233,6 +418,7 @@
                         renderApp();
                     }
                 });
+                
                 const optionButtons = document.querySelectorAll('[data-answer]');
                 optionButtons.forEach(button => {
                     button.addEventListener('click', (e) => {
@@ -249,7 +435,7 @@
             for (let i = 0; i < 4; i++) {
                 const nameInput = document.getElementById(`student-name-${i}`);
                 const nuaInput = document.getElementById(`student-nua-${i}`);
-                if (nameInput.value.trim() && nuaInput.value.trim()) {
+                if (nameInput && nameInput.value.trim() && nuaInput && nuaInput.value.trim()) {
                     students.push({ name: nameInput.value.trim(), nua: nuaInput.value.trim() });
                 }
             }
@@ -285,7 +471,10 @@
                 const minutes = Math.floor((timeLeft % 3600) / 60);
                 const seconds = timeLeft % 60;
                 const display = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-                document.getElementById('timer').textContent = `Tiempo restante: ${display}`;
+                const timerElement = document.getElementById('timer');
+                if (timerElement) {
+                    timerElement.textContent = `Tiempo restante: ${display}`;
+                }
             }, 1000);
         };
 
@@ -347,8 +536,12 @@
         };
 
         // Inicializar la aplicación
-        window.onload = renderApp;
-
+        window.onload = function() {
+            // Mostrar el modal de advertencia primero
+            document.getElementById('warning-modal').classList.remove('hidden');
+            document.getElementById('warning-modal').classList.add('flex');
+            addEventListeners();
+        };
     </script>
 </body>
 </html>
