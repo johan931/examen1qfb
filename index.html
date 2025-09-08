@@ -88,9 +88,6 @@
                 appContainer.innerHTML = renderExam();
             }
             addEventListeners();
-            if (window.MathJax) {
-                MathJax.typeset();
-            }
         };
 
         const renderStudentForm = () => {
@@ -210,11 +207,17 @@
                 document.getElementById('prev-btn').addEventListener('click', () => {
                     currentQuestionIndex--;
                     renderApp();
+                    if (window.MathJax) {
+                        MathJax.typeset();
+                    }
                 });
                 document.getElementById('next-btn').addEventListener('click', () => {
                     if (currentQuestionIndex < questionsData.length - 1) {
                         currentQuestionIndex++;
                         renderApp();
+                        if (window.MathJax) {
+                            MathJax.typeset();
+                        }
                     } else {
                         calculateScore();
                         isExamFinished = true;
@@ -341,4 +344,3 @@
     </script>
 </body>
 </html>
-```
