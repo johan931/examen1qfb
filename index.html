@@ -35,7 +35,7 @@
                 <p class="text-lg"><strong>Tiene aproximadamente 12 minutos para cada respuesta, administre bien su tiempo.</strong></p>
                 <p class="text-lg">Lea con atención cada pregunta antes de responder.</p>
                 <p class="text-lg text-red-600 font-bold">Esta aplicación cuenta con un sistema de identificación de páginas abiertas. Si se abre otra pestaña o ventana durante el examen, se enviará automáticamente un mensaje al profesor y su examen será anulado.</p>
-                <p class="text-lg">Trabaje con completa honestidad, el sistema está monitoreando su actividad.</p>
+                <p class="text-lg">No intente hacer trampa, el sistema está monitoreando su actividad.</p>
             </div>
             <button id="accept-warning" class="px-8 py-3 bg-green-600 text-white font-semibold rounded-xl shadow-md hover:bg-green-700 transition-colors duration-200">
                 Acepto y comprendo las condiciones
@@ -493,15 +493,18 @@
             
             // Título
             doc.setFontSize(18);
-            doc.text("Reporte de Examen", 20, 20);
+            doc.text("Reporte de Examen", 105, 15, { align: 'center' });
             doc.setFontSize(16);
-            doc.text("Cálculo Integral QFB-2025-II", 20, 28);
-            doc.text("Universidad de Guanajuato", 20, 36);
+            doc.text("Cálculo Integral QFB-2025-II", 105, 23, { align: 'center' });
+            doc.text("Universidad de Guanajuato", 105, 31, { align: 'center' });
             
             // Información del equipo y fecha
-            doc.setFontSize(14);
+            doc.setFontSize(12);
             let teamNames = students.map(s => `${s.name} (${s.nua})`).join(', ');
-            doc.text(`Integrantes del equipo: ${teamNames}`, 20, 50);
+            
+            // Dividir texto largo en múltiples líneas
+            const splitText = doc.splitTextToSize(`Integrantes del equipo: ${teamNames}`, 180);
+            doc.text(splitText, 20, 45);
             
             const today = new Date();
             const dateString = today.toLocaleDateString();
@@ -509,28 +512,60 @@
             const startTimeString = examStartTime ? examStartTime.toLocaleTimeString() : 'N/A';
             
             doc.text(`Fecha del Examen: ${dateString}`, 20, 60);
-            doc.text(`Hora de Inicio: ${startTimeString}`, 20, 68);
-            doc.text(`Hora de Entrega: ${timeString}`, 20, 76);
+            doc.text(`Hora de Inicio: ${startTimeString}`, 20, 67);
+            doc.text(`Hora de Entrega: ${timeString}`, 20, 74);
             
             // Calificación
-            doc.setFontSize(18);
-            doc.text(`Calificación Final: ${score.toFixed(2)} / 10`, 20, 93);
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 255); // Azul para la calificación
+            doc.text(`Calificación Final: ${score.toFixed(2)} / 10`, 105, 85, { align: 'center' });
             
             // Detalles de preguntas
-            doc.setFontSize(12);
-            let y = 108;
+            doc.setFontSize(10);
+            let y = 100;
+            let page = 1;
+            
             questionsData.forEach((question, index) => {
+                // Verificar si necesitamos una nueva página
+                if (y > 260) {
+                    doc.addPage();
+                    page++;
+                    y = 20;
+                    
+                    // Agregar número de página
+                    doc.setFontSize(10);
+                    doc.setTextColor(100);
+                    doc.text(`Página ${page}`, 105, 285, { align: 'center' });
+                    doc.setTextColor(0);
+                }
+                
                 const isCorrect = answers[question.id] === question.correctAnswer;
-                doc.setTextColor(isCorrect ? 34 : 220); // Verde para correcto, rojo para incorrecto
-                doc.text(`Pregunta ${index + 1}:`, 20, y);
-                y += 10;
-                doc.text(`Respuesta del equipo: ${answers[question.id] || 'No respondida'}`, 30, y);
-                y += 10;
-                // Add the correct answer for all questions, regardless if the student got it right or wrong.
-                doc.text(`Respuesta correcta: ${question.correctAnswer}`, 30, y);
-                y += 10;
-                y += 5;
+                
+                // Pregunta
+                doc.setTextColor(0); // Negro para las preguntas
+                const questionText = doc.splitTextToSize(`Pregunta ${index + 1}: ${question.question}`, 170);
+                doc.text(questionText, 20, y);
+                y += (questionText.length * 6) + 5;
+                
+                // Respuesta del estudiante
+                doc.setTextColor(isCorrect ? 0 : 255, 0, 0); // Verde si es correcta, rojo si es incorrecta
+                const studentAnswer = answers[question.id] || 'No respondida';
+                const studentAnswerText = doc.splitTextToSize(`Respuesta del equipo: ${studentAnswer}`, 170);
+                doc.text(studentAnswerText, 25, y);
+                y += (studentAnswerText.length * 6) + 5;
+                
+                // Respuesta correcta
+                doc.setTextColor(0, 0, 255); // Azul para la respuesta correcta
+                const correctAnswerText = doc.splitTextToSize(`Respuesta correcta: ${question.correctAnswer}`, 170);
+                doc.text(correctAnswerText, 25, y);
+                y += (correctAnswerText.length * 6) + 10;
             });
+            
+            // Agregar número de página a la primera página
+            doc.setPage(1);
+            doc.setFontSize(10);
+            doc.setTextColor(100);
+            doc.text('Página 1', 105, 285, { align: 'center' });
             
             doc.save(`Reporte_Examen_${students[0].name.split(' ')[0]}_${new Date().toISOString().slice(0, 10)}.pdf`);
         };
