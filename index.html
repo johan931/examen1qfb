@@ -88,6 +88,10 @@
                 appContainer.innerHTML = renderExam();
             }
             addEventListeners();
+            // This is the key fix: call typesetPromise after content is in the DOM
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
         };
 
         const renderStudentForm = () => {
@@ -207,17 +211,11 @@
                 document.getElementById('prev-btn').addEventListener('click', () => {
                     currentQuestionIndex--;
                     renderApp();
-                    if (window.MathJax) {
-                        MathJax.typeset();
-                    }
                 });
                 document.getElementById('next-btn').addEventListener('click', () => {
                     if (currentQuestionIndex < questionsData.length - 1) {
                         currentQuestionIndex++;
                         renderApp();
-                        if (window.MathJax) {
-                            MathJax.typeset();
-                        }
                     } else {
                         calculateScore();
                         isExamFinished = true;
